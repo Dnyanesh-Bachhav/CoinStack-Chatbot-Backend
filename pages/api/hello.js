@@ -13,6 +13,7 @@ export default async function(req,res){
     max_tokens: 2048
   });
   console.log(completion.data.choices[0].text);
+  // console.log(process.env.OPENAI_API_KEY);
   res.status(200).json({ result: completion.data.choices[0].text });
 }
 function generatePrompt(message)
