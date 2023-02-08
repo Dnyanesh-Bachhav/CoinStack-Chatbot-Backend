@@ -1,5 +1,21 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+import { Configuration, OpenAIApi } from "openai";
 
-export default function handler(req, res) {
-  res.status(200).json({ name: 'John Doe' })
+const configuration = new Configuration({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+const openai = new OpenAIApi(configuration);
+
+export default async function(req,res){
+  const completion = await openai.createCompletion({
+    model: "text-davinci-003",
+    prompt: generatePrompt(req.body.message),
+    temperature: 0.6,
+    max_tokens: 2048
+  });
+  console.log(completion.data.choices[0].text);
+  res.status(200).json({ result: completion.data.choices[0].text });
+}
+function generatePrompt(message)
+{
+  return `${message}`;
 }
