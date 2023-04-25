@@ -4,8 +4,8 @@ const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
 const openai = new OpenAIApi(configuration);
-
 export default async function(req,res){
+  // console.log(req.body.message);
   const completion = await openai.createCompletion({
     model: "text-davinci-003",
     prompt: generatePrompt(req.body.message),
@@ -13,7 +13,7 @@ export default async function(req,res){
     max_tokens: 2048
   });
   console.log(completion.data.choices[0].text);
-  // console.log(process.env.OPENAI_API_KEY);
+  console.log(process.env.OPENAI_API_KEY);
   res.status(200).json({ result: completion.data.choices[0].text });
 }
 function generatePrompt(message)
