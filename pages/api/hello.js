@@ -6,15 +6,13 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 export default async function(req,res){
   // console.log(req.body.message);
-  const completion = await openai.createCompletion({
-    model: "text-davinci-003",
-    prompt: generatePrompt(req.body.message),
-    temperature: 0.6,
-    max_tokens: 2048
+  const completion = await openai.createChatCompletion({
+    model: "gpt-3.5-turbo",
+    messages: [{ role: 'user', content: generatePrompt(req.body.message||"Hi")}]
   });
-  console.log(completion.data.choices[0].text);
+  console.log(completion.data.choices[0].message.content);
   console.log(process.env.OPENAI_API_KEY);
-  res.status(200).json({ result: completion.data.choices[0].text });
+  res.status(200).json({ result: completion.data.choices[0].message.content });
 }
 function generatePrompt(message)
 {
